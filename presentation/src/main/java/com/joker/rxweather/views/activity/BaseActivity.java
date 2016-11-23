@@ -32,7 +32,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
   }
 
-  @SuppressWarnings("unchecked") private void SubscribeToFinish() {
+  @SuppressWarnings("unchecked")
+  private void SubscribeToFinish() {
 
     /**
      * https://gist.github.com/benjchristensen/04eef9ca0851f3a5d7bf

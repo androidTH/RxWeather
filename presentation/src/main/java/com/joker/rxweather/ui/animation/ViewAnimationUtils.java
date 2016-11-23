@@ -46,7 +46,8 @@ public class ViewAnimationUtils {
    * @param startRadius The starting radius of the animating circle.
    * @param endRadius The ending radius of the animating circle.
    */
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP) public static SupportAnimator createCircularReveal(
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  public static SupportAnimator createCircularReveal(
       View view, int centerX, int centerY, float startRadius, float endRadius) {
 
     if (!(view.getParent() instanceof RevealAnimator)) {

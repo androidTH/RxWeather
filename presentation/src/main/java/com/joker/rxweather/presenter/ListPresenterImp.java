@@ -70,7 +70,8 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   }
 
   /*准备工作Subscriber，位置，城市列表等*/
-  @RxLogSubscriber private final class PrepareSubscriber extends Subscriber<SparseArray> {
+  @RxLogSubscriber
+  private final class PrepareSubscriber extends Subscriber<SparseArray> {
 
     private ListRequest listRequest;
 
@@ -89,7 +90,8 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   }
 
   /*城市天气预报表*/
-  @RxLogSubscriber private final class ListSubscriber extends Subscriber<List<MainEntity>> {
+  @RxLogSubscriber
+  private final class ListSubscriber extends Subscriber<List<MainEntity>> {
 
     @Override public void onCompleted() {
       ListPresenterImp.this.listView.showContent();
