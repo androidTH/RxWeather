@@ -106,16 +106,17 @@ public class ForecastWeatherEntity implements Serializable, Cloneable {
     return clone;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "ForecastWeatherEntity{" +
-        "dayCode='" + dayCode + '\'' +
-        ", nightCode='" + nightCode + '\'' +
-        ", dayText='" + dayText + '\'' +
-        ", nightText='" + nightText + '\'' +
-        ", date='" + date + '\'' +
-        ", maxTemp='" + maxTemp + '\'' +
-        ", minTemp='" + minTemp + '\'' +
-        ", windDescription='" + windDescription + '\'' +
-        '}';
+            "dayCode='" + dayCode + '\'' +
+            ", nightCode='" + nightCode + '\'' +
+            ", dayText='" + dayText + '\'' +
+            ", nightText='" + nightText + '\'' +
+            ", date='" + date + '\'' +
+            ", maxTemp='" + maxTemp + '\'' +
+            ", minTemp='" + minTemp + '\'' +
+            ", windDescription='" + windDescription + '\'' +
+            '}';
   }
 }

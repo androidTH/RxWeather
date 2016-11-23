@@ -23,7 +23,8 @@ public class RequestCitiesEntity {
         ]
     }*/
 
-  @Expose @SerializedName("cities") private List<RequestCity> requestCityList;
+  @Expose @SerializedName("cities")
+  private List<RequestCity> requestCityList;
 
   public List<RequestCity> getRequestCityList() {
     return requestCityList;

@@ -16,14 +16,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
   private Subscription subscribe = Subscriptions.empty();
 
-  @Override public void setContentView(int layoutResID) {
+  @Override
+  public void setContentView(int layoutResID) {
     super.setContentView(layoutResID);
     ButterKnife.bind(BaseActivity.this);
   }
 
-  @CallSuper @Override protected void onCreate(Bundle savedInstanceState) {
+  @CallSuper @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(BaseActivity.this.getLayoutId());
+    setContentView(getLayoutId());
     BaseActivity.this.onCreated();
     BaseActivity.this.initView(savedInstanceState);
 
@@ -51,7 +53,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         });
   }
 
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
       BaseActivity.this.exit();
     }

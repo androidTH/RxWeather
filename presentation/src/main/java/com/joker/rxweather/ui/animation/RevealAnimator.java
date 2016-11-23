@@ -118,8 +118,8 @@ public interface RevealAnimator {
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB) class RevealFinishedIceCreamSandwich
-      extends RevealFinishedGingerbread {
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+  class RevealFinishedIceCreamSandwich extends RevealFinishedGingerbread {
     int mFeaturedLayerType;
     int mLayerType;
 
@@ -148,7 +148,8 @@ public interface RevealAnimator {
 
   class RevealFinishedJellyBeanMr2 extends RevealFinishedIceCreamSandwich {
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB) RevealFinishedJellyBeanMr2(RevealAnimator target) {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    RevealFinishedJellyBeanMr2(RevealAnimator target) {
       super(target);
 
       mFeaturedLayerType = View.LAYER_TYPE_HARDWARE;

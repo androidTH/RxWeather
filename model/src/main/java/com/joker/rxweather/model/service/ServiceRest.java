@@ -15,14 +15,17 @@ import com.joker.rxweather.model.entities.SearchEntity;
 import com.joker.rxweather.model.entities.WeatherEntity;
 import com.joker.rxweather.model.response.ForecastResponse;
 import com.joker.rxweather.model.response.LocationResponse;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.android.AndroidLog;
-import retrofit.converter.GsonConverter;
+
+import okhttp3.Interceptor;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -49,34 +52,33 @@ public class ServiceRest {
 
   public ServiceRest() {
 
-    RequestInterceptor requestInterceptor = new RequestInterceptor() {
-      @Override public void intercept(RequestFacade request) {
-        request.addHeader("Accept-Encoding", "application/json");
-      }
-    };
+//     requestInterceptor = new RequestInterceptor() {
+//      @Override public void intercept(RequestFacade request) {
+//        request.addHeader("Accept-Encoding", "application/json");
+//      }
+//    };
 
     Gson gson = new GsonBuilder()//
         .excludeFieldsWithoutExposeAnnotation() //不导出实体中没有用@Expose注解的属性
         .enableComplexMapKeySerialization() //支持Map的key为复杂对象的形式
         .serializeNulls().create();
 
-    RestAdapter locationRestAdapter =
-        new RestAdapter.Builder().setEndpoint(Constants.LOCATION_BASE_URL)
-            .setRequestInterceptor(requestInterceptor)
-            .setLogLevel(RestAdapter.LogLevel.FULL)
-            .setLog(new AndroidLog("_RxWeather_Log"))
-            .setClient(OkClientInstance.getInstance())
-            .setConverter(new GsonConverter(gson))
+    Retrofit locationRestAdapter =
+        new Retrofit.Builder().baseUrl(Constants.LOCATION_BASE_URL)
+            .client(OkClientInstance.getInstance())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
+//      .setRequestInterceptor(requestInterceptor)
+//              .setLogLevel(RestAdapter.LogLevel.FULL)
+//              .setLog(new AndroidLog("_RxWeather_Log"))
 
-    RestAdapter serviceRestAdapter =
-        new RestAdapter.Builder().setEndpoint(Constants.FORECAST_BASE_URL)
-            .setRequestInterceptor(requestInterceptor)
-            .setLogLevel(RestAdapter.LogLevel.FULL)
-            .setLog(new AndroidLog("_RxWeather_Log"))
-            .setClient(OkClientInstance.getInstance())
-            .setConverter(new GsonConverter(gson))
+    Retrofit serviceRestAdapter =
+        new Retrofit.Builder().baseUrl(Constants.FORECAST_BASE_URL)
+            .client(OkClientInstance.getInstance())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
+//            .setLogLevel(RestAdapter.LogLevel.FULL)
+//            .setLog(new AndroidLog("_RxWeather_Log"))
 
     locationApi = locationRestAdapter.create(LocationApi.class);
     serviceApi = serviceRestAdapter.create(ServiceApi.class);

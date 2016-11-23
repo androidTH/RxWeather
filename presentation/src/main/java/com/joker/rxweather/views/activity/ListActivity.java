@@ -46,8 +46,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Joker on 2015/10/29.
  */
-public class ListActivity extends BaseActivity
-        implements ListView<Observable<List<MainEntity>>>, ForecastAdapter.Callback {
+public class ListActivity extends BaseActivity implements ListView<Observable<List<MainEntity>>>, ForecastAdapter.Callback {
 
     private static final String TAG = ListActivity.class.getSimpleName();
 

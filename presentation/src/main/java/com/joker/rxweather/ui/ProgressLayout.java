@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +56,13 @@ public class ProgressLayout extends RelativeLayout {
     inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
 
-  @Override public void addView(View child, int index, ViewGroup.LayoutParams params) {
+  @Override
+  public void addView(View child, int index, ViewGroup.LayoutParams params) {
     super.addView(child, index, params);
 
     if (child.getTag() == null || (!child.getTag().equals(LOADING_TAG) && !child.getTag()
         .equals(ERROR_TAG))) {
+      Log.i("addView","Tag="+child.getTag());
       contentViews.add(child);
     }
   }
@@ -112,6 +115,7 @@ public class ProgressLayout extends RelativeLayout {
   private void showLoadingView() {
 
     if (loadingGroup == null) {
+      Log.i("addView","showLoadingView");
       loadingGroup = inflater.inflate(R.layout.progress_loading_view, null);
       loadingLayout = (RelativeLayout) loadingGroup.findViewById(R.id.loadingStateRelativeLayout);
       loadingLayout.setTag(LOADING_TAG);

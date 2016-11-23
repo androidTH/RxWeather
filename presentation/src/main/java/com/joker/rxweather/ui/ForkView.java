@@ -18,7 +18,8 @@ import com.joker.rxweather.common.Constants;
 /**
  * Created by Joker on 2015/11/5.
  */
-@CoordinatorLayout.DefaultBehavior(ForkView.Behavior.class) public class ForkView extends TextView {
+@CoordinatorLayout.DefaultBehavior
+        (ForkView.Behavior.class) public class ForkView extends TextView {
 
   private static final String TAG = ForkView.class.getSimpleName();
 
