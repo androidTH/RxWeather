@@ -21,12 +21,12 @@ import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.ForecastWeatherEntity;
 import java.util.List;
 import rx.Observer;
+import rx.functions.Action1;
 
 /**
  * Created by Joker on 2015/11/3.
  */
-public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder>
-    implements Observer<List<ForecastWeatherEntity>> {
+public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> implements Action1<List<ForecastWeatherEntity>> {
 
   private Context context;
   private List<ForecastWeatherEntity> forecastWeatherEntities;
@@ -47,6 +47,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     DetailAdapter.this.bindValue(holder, forecastWeatherEntities.get(position));
     DetailAdapter.this.runEnterAnimation(holder.itemView, position);
   }
+
 
   private void bindValue(ViewHolder holder, ForecastWeatherEntity entity) {
 
@@ -106,15 +107,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     return (this.forecastWeatherEntities != null) ? this.forecastWeatherEntities.size() : 0;
   }
 
-  @Override public void onCompleted() {
-    /*never invoked*/
-  }
-
-  @Override public void onError(Throwable e) {
-    e.printStackTrace();
-  }
-
-  @Override public void onNext(List<ForecastWeatherEntity> mainEntities) {
+  @Override
+  public void call(List<ForecastWeatherEntity> mainEntities) {
     this.forecastWeatherEntities = mainEntities;
     DetailAdapter.this.notifyDataSetChanged();
   }

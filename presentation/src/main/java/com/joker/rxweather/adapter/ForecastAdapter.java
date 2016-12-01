@@ -52,7 +52,8 @@ public class ForecastAdapter extends RecyclerView.Adapter implements Observer<Li
         .compose(activity.<Integer>bindUntilEvent(ActivityEvent.DESTROY))
         .forEach(new Action1<Integer>() {
           @Override public void call(Integer position) {
-            if (callback != null) callback.onItemClick(mainEntities.get(position), position);
+            if (callback != null)
+              callback.onItemClick(mainEntities.get(position), position);
           }
         });
   }

@@ -14,7 +14,8 @@ public abstract class UseCase<T, R> {
 
   private Subscription subscription = Subscriptions.empty();
 
-  @SuppressWarnings("unchecked") public void subscribe(Observer<T> UseCaseSubscriber, R params) {
+  @SuppressWarnings("unchecked")
+  public void subscribe(Observer<T> UseCaseSubscriber, R params) {
 
     UseCase.this.subscription = this.interactor(params)//
         .onBackpressureBuffer()//

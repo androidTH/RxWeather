@@ -90,8 +90,8 @@ public class ServiceRest {
   public Observable<List<MainEntity>> getWeatherByCityOrCityId(AddressEntity locationEntity,
       List<RequestCitiesEntity.RequestCity> requestCities) {
 
-    return Observable.zip(ServiceRest.this.getForecastByLocation(locationEntity),
-        ServiceRest.this.getForecastByCity(requestCities),
+    return Observable.zip(getForecastByLocation(locationEntity),
+        getForecastByCity(requestCities),
         new Func2<MainEntity, List<MainEntity>, List<MainEntity>>() {
           @Override
           public List<MainEntity> call(MainEntity mainEntity, List<MainEntity> mainEntities) {
@@ -125,12 +125,12 @@ public class ServiceRest {
           }
         })
         .concatMap(new Func1<ForecastResponse.Main, Observable<MainEntity>>() {
-          @Override public Observable<MainEntity> call(ForecastResponse.Main main) {
-
-            return Observable.combineLatest(ServiceRest.this.liftWeather(main),
-                ServiceRest.this.transferForecast(main.getForecasts()),
+          @Override
+          public Observable<MainEntity> call(ForecastResponse.Main main) {
+            return Observable.combineLatest(liftWeather(main),transferForecast(main.getForecasts()),
                 new Func2<WeatherEntity, List<ForecastWeatherEntity>, MainEntity>() {
-                  @Override public MainEntity call(WeatherEntity weatherEntity,
+                  @Override
+                  public MainEntity call(WeatherEntity weatherEntity,
                       List<ForecastWeatherEntity> forecastWeatherEntities) {
 
                     return new MainEntity(weatherEntity, forecastWeatherEntities);
@@ -175,7 +175,7 @@ public class ServiceRest {
         .concatMap(new Func1<ForecastResponse.Main, Observable<MainEntity>>() {
           @Override public Observable<MainEntity> call(ForecastResponse.Main main) {
 
-            return Observable.combineLatest(ServiceRest.this.liftWeather(main),
+            return Observable.combineLatest(liftWeather(main),
                 ServiceRest.this.transferForecast(main.getForecasts()),
                 new Func2<WeatherEntity, List<ForecastWeatherEntity>, MainEntity>() {
                   @Override public MainEntity call(WeatherEntity weatherEntity,
@@ -192,7 +192,8 @@ public class ServiceRest {
   private Observable<WeatherEntity> liftWeather(ForecastResponse.Main main) {
 
     return Observable.just(main).map(new Func1<ForecastResponse.Main, WeatherEntity>() {
-      @Override public WeatherEntity call(ForecastResponse.Main main) {
+      @Override
+      public WeatherEntity call(ForecastResponse.Main main) {
 
         /**/
         ForecastResponse.Main.Basic basic = main.getBasic();

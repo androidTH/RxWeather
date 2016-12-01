@@ -39,6 +39,7 @@ import com.joker.rxweather.ui.InsertDecoration;
 import com.trello.rxlifecycle.ActivityEvent;
 import java.util.List;
 import rx.Observable;
+import rx.Observer;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -87,11 +88,13 @@ public class DetailActivity extends BaseActivity {
     startingActivity.startActivity(intent);
   }
 
-  @Override protected int getLayoutId() {
+  @Override
+  protected int getLayoutId() {
     return R.layout.detail_layout;
   }
 
-  @Override protected void onCreated() {
+  @Override
+  protected void onCreated() {
 
     if (DetailActivity.orientation == -1) {
       DetailActivity.orientation = getResources().getConfiguration().orientation;
@@ -101,38 +104,21 @@ public class DetailActivity extends BaseActivity {
 
     /*按理说，任何一个粘性事件都不应该持有相应的Observable*/
     if (!rxBus.hasStickObservers() && mainEntity == null) {
-      DetailActivity.this.getData();
+        getData();
     }
   }
 
-  @SuppressWarnings("unchecked") private void getData() {
+  @Override
+  protected void initView(Bundle savedInstanceState) {
 
-    this.compositeSubscription.add(MyApplication
-                                       .get()
-                                       .getRxBus()
-                                       .toStickObservable(MainEntity.class)
-                                       .compose(DetailActivity.this.<MainEntity>bindUntilEvent(ActivityEvent.DESTROY))
-                                       .subscribe(new Action1<MainEntity>() {
-                                         @Override public void call(MainEntity mainEntity) {
-
-                                           DetailActivity.this.mainEntity = mainEntity;
-
-                                           weatherEntity = mainEntity.getWeatherEntity();
-                                           forecastWeatherEntities = mainEntity.getForecastWeatherEntityList();
-                                         }
-                                       }));
-  }
-
-  @Override protected void initView(Bundle savedInstanceState) {
-
-    DetailActivity.this.setupAnimIv();
-    DetailActivity.this.setupAdapter();
+    setupAnimIv();
+    setupAdapter();
 
     if (savedInstanceState == null) {
       rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
         @Override public boolean onPreDraw() {
           rootView.getViewTreeObserver().removeOnPreDrawListener(this);
-          DetailActivity.this.runEnterAnimation(getIntent().getExtras());
+          runEnterAnimation(getIntent().getExtras());
           return true;
         }
       });
@@ -147,10 +133,29 @@ public class DetailActivity extends BaseActivity {
       ViewCompat.setTranslationX(animIv, finalBounds.left);
       ViewCompat.setTranslationY(animIv, finalBounds.top);
 
-      DetailActivity.this.initData();
+      initData();
 
-      this.compositeSubscription.add(Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
+//      this.compositeSubscription.add(Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void getData() {//请求网络数据
+    this.compositeSubscription.add(MyApplication
+            .get()
+            .getRxBus()
+            .toStickObservable(MainEntity.class)
+            .compose(DetailActivity.this.<MainEntity>bindUntilEvent(ActivityEvent.DESTROY))
+            .subscribe(new Action1<MainEntity>() {
+              @Override
+              public void call(MainEntity mainEntity) {
+
+                DetailActivity.this.mainEntity = mainEntity;
+
+                weatherEntity = mainEntity.getWeatherEntity();
+                forecastWeatherEntities = mainEntity.getForecastWeatherEntityList();
+              }
+            }));
   }
 
   private void setupAdapter() {
@@ -211,8 +216,7 @@ public class DetailActivity extends BaseActivity {
 
         animIv.setLayerType(View.LAYER_TYPE_NONE, null);
         animIv.setVisibility(View.GONE);
-        if (DetailActivity.this.animatorSet != null) DetailActivity.this.initData();
-
+        if (DetailActivity.this.animatorSet != null) initData();
         DetailActivity.this.animatorSet = null;
       }
 
@@ -221,7 +225,7 @@ public class DetailActivity extends BaseActivity {
       }
     });
     set.start();
-    DetailActivity.this.animatorSet = set;
+    this.animatorSet = set;
   }
 
   private void setupAnimIv() {
@@ -247,7 +251,6 @@ public class DetailActivity extends BaseActivity {
         .dontAnimate()
         .diskCacheStrategy(DiskCacheStrategy.RESULT)
         .into(weatherIv);
-
     this.compositeSubscription.add(Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
   }
 

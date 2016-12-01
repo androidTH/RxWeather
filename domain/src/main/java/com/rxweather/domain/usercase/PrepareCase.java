@@ -41,16 +41,16 @@ public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
   public PrepareCase() {
   }
 
-  @Override protected Observable<SparseArray> interactor(PrepareRequest prepareRequest) {
+  @Override
+  protected Observable<SparseArray> interactor(PrepareRequest prepareRequest) {
 
     this.handlerThread = new HandlerThread("backgroundThread");
     this.handlerThread.start();
 
-    return Observable.zip(PrepareCase.this.getLocationObservable(prepareRequest.locationManager),
-        PrepareCase.this.getRequestCitiesObservable(prepareRequest.assetManager),
+    return Observable.zip(getLocationObservable(prepareRequest.locationManager),getRequestCitiesObservable(prepareRequest.assetManager),
         new Func2<AddressEntity, List<RequestCitiesEntity.RequestCity>, SparseArray>() {
-          @Override public SparseArray call(AddressEntity locationEntity,
-              List<RequestCitiesEntity.RequestCity> requestCities) {
+          @Override
+          public SparseArray call(AddressEntity locationEntity,List<RequestCitiesEntity.RequestCity> requestCities) {
 
             SparseArray sparseArray = new SparseArray(2);
             sparseArray.put(Constants.LOCATION_TAG, locationEntity);
@@ -66,7 +66,8 @@ public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
 
     return Observable.create(new Observable.OnSubscribe<Location>() {
 
-      @Override public void call(final Subscriber<? super Location> subscriber) {
+      @Override
+      public void call(final Subscriber<? super Location> subscriber) {
 
         final LocationListener locationListener = new LocationListenerAdapter() {
           public void onLocationChanged(final Location location) {
@@ -80,7 +81,8 @@ public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
         };
 
         subscriber.add(new MainThreadSubscription() {
-          @Override protected void onUnsubscribe() {
+          @Override
+          protected void onUnsubscribe() {
             locationManager.removeUpdates(locationListener);
             handlerThread.getLooper().quit();
           }
@@ -95,7 +97,8 @@ public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
             handlerThread.getLooper());
       }
     }).concatMap(new Func1<Location, Observable<AddressEntity>>() {
-      @Override public Observable<AddressEntity> call(Location location) {
+      @Override
+      public Observable<AddressEntity> call(Location location) {
 
         return ServiceRest.getInstance().getCityByCoordinate(location);
       }

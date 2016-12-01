@@ -38,6 +38,8 @@ import com.joker.rxweather.ui.animation.ViewAnimationUtils;
 import com.joker.rxweather.ui.widget.RevealFrameLayout;
 import com.joker.rxweather.views.SearchView;
 import com.trello.rxlifecycle.ActivityEvent;
+
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -95,7 +97,7 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
     private View.OnClickListener retryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SearchActivity.this.searchPresenter.search(cityName);
+            searchPresenter.search(cityName);
         }
     };
 
@@ -130,7 +132,7 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
                 @Override
                 public boolean onPreDraw() {
                     rootView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    SearchActivity.this.runEnterAnim();
+                    runEnterAnim();
                     return true;
                 }
             });
@@ -228,10 +230,14 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
 
     @Override
     public void showSearchResult(Observable<SearchEntity> searchEntityObservable) {
-        SearchActivity.this.showResult(searchEntityObservable);
+        showResult(searchEntityObservable);
     }
 
-    private void showResult(Observable<SearchEntity> searchEntityObservable) {
+    private void
+
+
+
+    showResult(Observable<SearchEntity> searchEntityObservable) {
 
         this.cacheObservable = searchEntityObservable;
 

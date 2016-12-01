@@ -28,7 +28,8 @@ public class SearchPresenterImp implements SearchPresenter<SearchView<Observable
     this.searchCase = new SearchUseCase();
   }
 
-  @Override public void search(String cityName) {
+  @Override
+  public void search(String cityName) {
 
     SearchPresenterImp.this.showLoading();
     this.searchCase.subscribe(new SearchSubscriber(), addressEntity.setCity(cityName));
@@ -48,7 +49,8 @@ public class SearchPresenterImp implements SearchPresenter<SearchView<Observable
     this.searchView.showError(messageId);
   }
 
-  @RxLogSubscriber public final class SearchSubscriber extends Subscriber<SearchEntity> {
+  @RxLogSubscriber
+  public final class SearchSubscriber extends Subscriber<SearchEntity> {
 
     @Override public void onCompleted() {
       SearchPresenterImp.this.searchView.showContent();

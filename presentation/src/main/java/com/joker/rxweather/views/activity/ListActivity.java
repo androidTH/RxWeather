@@ -88,7 +88,7 @@ public class ListActivity extends BaseActivity implements ListView<Observable<Li
     private View.OnClickListener retryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ListActivity.this.listPresenter.loadData();
+            listPresenter.loadData();
         }
     };
 
@@ -120,7 +120,7 @@ public class ListActivity extends BaseActivity implements ListView<Observable<Li
         ListActivity.this.getSupportActionBar().setTitle("");
         titleTv.setText(getResources().getString(R.string.bottom_bar_forecast));
 
-        ListActivity.this.setupAdapter();
+        setupAdapter();
 
         if (savedInstanceState == null) {
             revealFrameLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -131,6 +131,8 @@ public class ListActivity extends BaseActivity implements ListView<Observable<Li
                     return true;
                 }
             });
+
+
         } else {
 
             List<MainEntity> entityList = (List<MainEntity>) savedInstanceState.getSerializable(Constants.CACHE);

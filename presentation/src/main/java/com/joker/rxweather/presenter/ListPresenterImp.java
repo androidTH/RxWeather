@@ -37,7 +37,8 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   public ListPresenterImp() {
   }
 
-  @Override public void attachView(@NonNull ListView<Observable<List<MainEntity>>> view) {
+  @Override
+  public void attachView(@NonNull ListView<Observable<List<MainEntity>>> view) {
     this.listView = view;
 
     this.prepareRequest = new PrepareRequest(
@@ -48,24 +49,25 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
     this.listUseCase = new ListUseCase();
   }
 
-  @Override public void loadData() {
-    ListPresenterImp.this.showLoading();
-    this.prepareCase.subscribe(new PrepareSubscriber(), prepareRequest);
+  @Override
+  public void loadData() {
+    showLoading();//显示加载动画
+    prepareCase.subscribe(new PrepareSubscriber(), prepareRequest);
   }
 
-  private void showLoading() {
+  private void showLoading() {//正在加载
     if (!listView.isContent()) {
       this.listView.showLoading();
     }
   }
 
-  private void showContent(List<MainEntity> mainEntities) {
+  private void showContent(List<MainEntity> mainEntities) {//显示内容
      /*这和.publish().replay()有些不同，如果考虑GC pressure，还是换一种实现比较好:)
     https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/cache.png*/
     this.listView.showForecasts(Observable.just(mainEntities).cache());
   }
 
-  private void showError(int messageId) {
+  private void showError(int messageId) {//异常抛出
     this.listView.showError(messageId);
   }
 
@@ -76,11 +78,11 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
     private ListRequest listRequest;
 
     @Override public void onCompleted() {
-      ListPresenterImp.this.listUseCase.subscribe(new ListSubscriber(), listRequest);
+      listUseCase.subscribe(new ListSubscriber(), listRequest);
     }
 
     @Override public void onError(Throwable e) {
-      ListPresenterImp.this.showError(ErrorHanding.propagate(e));
+      showError(ErrorHanding.propagate(e));
     }
 
     @Override public void onNext(SparseArray sparseArray) {
@@ -94,15 +96,15 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   private final class ListSubscriber extends Subscriber<List<MainEntity>> {
 
     @Override public void onCompleted() {
-      ListPresenterImp.this.listView.showContent();
+      listView.showContent();
     }
 
     @Override public void onError(Throwable e) {
-      ListPresenterImp.this.showError(ErrorHanding.propagate(e));
+      showError(ErrorHanding.propagate(e));
     }
 
     @Override public void onNext(List<MainEntity> mainEntities) {
-      ListPresenterImp.this.showContent(mainEntities);
+      showContent(mainEntities);
     }
   }
 

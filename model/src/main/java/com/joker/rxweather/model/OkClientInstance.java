@@ -24,6 +24,7 @@ public class OkClientInstance {
           clientSingleton = new OkHttpClient.Builder()
                   .addNetworkInterceptor(interceptor)
                   .addInterceptor(new HeaderInterceptor())
+                  .retryOnConnectionFailure(true)
                   .connectTimeout(5000, TimeUnit.SECONDS).build();
         }
       }

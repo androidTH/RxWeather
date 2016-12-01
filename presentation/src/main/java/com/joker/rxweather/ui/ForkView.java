@@ -18,8 +18,8 @@ import com.joker.rxweather.common.Constants;
 /**
  * Created by Joker on 2015/11/5.
  */
-@CoordinatorLayout.DefaultBehavior
-        (ForkView.Behavior.class) public class ForkView extends TextView {
+@CoordinatorLayout.DefaultBehavior(ForkView.Behavior.class)
+public class ForkView extends TextView {
 
   private static final String TAG = ForkView.class.getSimpleName();
 
@@ -44,7 +44,8 @@ import com.joker.rxweather.common.Constants;
     }
   }
 
-  @Override public Parcelable onSaveInstanceState() {
+  @Override
+  public Parcelable onSaveInstanceState() {
 
     SavedState savedState = new SavedState(super.onSaveInstanceState());
     savedState.stateToSave = ForkView.this.getTranslationY();
@@ -104,7 +105,7 @@ import com.joker.rxweather.common.Constants;
 
     @Override public boolean onDependentViewChanged(CoordinatorLayout parent, ForkView child, View dependency) {
       if (dependency instanceof AppBarLayout) {
-        Behavior.this.updateVisibility(parent, (AppBarLayout) dependency, child);
+        updateVisibility(parent, (AppBarLayout) dependency, child);
       }
       return false;
     }

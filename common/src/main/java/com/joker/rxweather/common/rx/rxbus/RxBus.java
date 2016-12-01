@@ -7,6 +7,7 @@ import rx.subjects.SerializedSubject;
 
 /**
  * Created by Joker on 2015/10/31.
+ * 事件线程的控制
  */
 public class RxBus {
 
